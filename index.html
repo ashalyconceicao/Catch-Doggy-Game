@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catch Doggy</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #87ceeb; /* Blue sky */
+            margin: 0;
+            overflow: hidden;
+        }
+
+        h1 {
+            color: #ff69b4;
+            margin-top: 20px;
+        }
+
+        #gameArea {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            margin: 20px auto;
+            border: 5px solid #ff69b4;
+            background-color: #00ff00; /* Green grass */
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        #lisa, #alfie {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            background-size: cover;
+        }
+
+        #lisa {
+            background-image: url('https://i.imgur.com/3XEe50q.gif');
+            left: 0;
+            bottom: 50px; /* Position on the grass */
+        }
+
+        #alfie {
+            background-image: url('https://i.pinimg.com/originals/c5/ee/51/c5ee5152fd8575cd966fa258addca1a1.gif');
+            right: 0;
+            bottom: 50px; /* Position on the grass */
+        }
+
+        /* Pixelated clouds */
+        .cloud {
+            position: absolute;
+            width: 80px;
+            height: 50px;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.9;
+        }
+
+        .cloud:before,
+        .cloud:after {
+            content: '';
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        .cloud:before {
+            width: 50px;
+            height: 50px;
+            top: -25px;
+            left: 15px;
+        }
+
+        .cloud:after {
+            width: 60px;
+            height: 60px;
+            top: -30px;
+            left: -15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Catch Doggy</h1>
+    <div id="gameArea">
+        <div class="cloud" style="top: 50px; left: 50px;"></div>
+        <div class="cloud" style="top: 80px; left: 250px;"></div>
+        <div class="cloud" style="top: 120px; left: 450px;"></div>
+        <div id="lisa"></div>
+        <div id="alfie"></div>
+    </div>
+    <p>Use the arrow keys to move Lisa and catch Alfie!</p>
+
+    <!-- Adding a hype song -->
+    <audio id="hypeSong" autoplay loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        const lisa = document.getElementById('lisa');
+        const alfie = document.getElementById('alfie');
+
+        let lisaPosition = 0;
+        const alfiePosition = window.innerWidth - 100; // Adjusted for screen width
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                lisaPosition += 10;
+                if (lisaPosition > alfiePosition) {
+                    lisaPosition = alfiePosition;
+                }
+            } else if (e.key === 'ArrowLeft') {
+                lisaPosition -= 10;
+                if (lisaPosition < 0) {
+                    lisaPosition = 0;
+                }
+            }
+            lisa.style.left = lisaPosition + 'px';
+
+            if (lisaPosition >= alfiePosition - 10) {
+                alert('Yay! Lisa caught Alfie!');
+                lisaPosition = 0;
+                lisa.style.left = lisaPosition + 'px';
+            }
+        });
+
+        // Resize Alfie's position based on window size
+        window.addEventListener('resize', () => {
+            const alfieNewPosition = window.innerWidth - 100;
+            alfie.style.right = window.innerWidth - alfieNewPosition + 'px';
+        });
+    </script>
+</body>
+</html>
